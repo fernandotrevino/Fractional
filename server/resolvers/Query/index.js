@@ -11,12 +11,6 @@ export const user = async (_, { id }) => {
   return user;
 };
 
-export const users = async () => {
-  const users = await query(`
-  SELECT * FROM  users
-  `);
-  return users;
-};
 
 export const community = async (_, { id }) => {
   const community = await get(`
@@ -28,31 +22,14 @@ export const community = async (_, { id }) => {
   return community;
 };
 
-export const communities = async () => {
-  const communities = await query(`
-    SELECT * 
-    FROM communities
-    `);
 
-  return communities;
-};
-
-
-
-export const commPost = async (_, { id }) => {
-  const commPost = await query(`
-    SELECT * 
-    FROM posts 
-    WHERE comm_id = ?
-  `, [id]);
-
-  return commPost;
-};
 export const post = async (_, { id }) => {
   const post = await query(`
-    SELECT * 
-    FROM posts
-    WHERE user_id = ?
+  SELECT posts.id, posts.text, posts.user_id, users.name, users.profile_photo
+  FROM posts
+  INNER JOIN users
+  ON posts.user_id = users.id
+  WHERE users.id = ?;
   `, [id]);
 
   return post;
@@ -61,13 +38,11 @@ export const post = async (_, { id }) => {
 
 export const posts = async () => {
   const posts = await query(`
-  SELECT  *
-  FROM  communities,users ,posts
-  Join feeds on
-  feeds.source_id = users.id & communities.id
-  
-  LIMIT 5;
-  ORDER BY ID  DESC;
+  SELECT DISTINCT posts.*, users.name, users.profile_photo
+  FROM posts
+  INNER JOIN users
+  ON posts.user_id = users.id
+  ORDER BY posts.created_ts DESC;
   ` );
   return posts;
 

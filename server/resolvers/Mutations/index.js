@@ -5,18 +5,12 @@ import { run } from '@/server/db';
 export const addPost = async (_, { input }) => {
   const {
     text,
-    user_id
+    user_id,
+    source_id
 
   } = input;
-  const post = await run("INSERT INTO posts(text,user_id) values(?,?)", text, user_id);
+  const post = await run("INSERT INTO posts (text, user_id, source_id) VALUES (?, ?, ?) ", text, user_id, source_id);
   return post;
 }
-export const addPostC = async (_, { input }) => {
-  const {
-    text,
-    comm_id
-  } = input;
-  const post = await run("INSERT INTO posts(text,comm_id) values(?,?)", text, comm_id);
 
-  return post;
-}
+

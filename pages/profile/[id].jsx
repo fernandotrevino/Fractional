@@ -3,6 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import Card from '@/components/Card';
 import CommunityCardButton from '@/components/CommunityCardButton';
 import Page from '@/components/Page';
+import Createpost from '@/components/createpost';
 
 const USER_QUERY = gql`
   query ($id: Int!) {
@@ -16,17 +17,11 @@ const USER_QUERY = gql`
         name
         icon
       }
-    }
-  }
-`;
-
-const POST_USER = gql`
-  query ($id: Int!) {
-    post(id: $id) {
-      id
-      text
-      user_id
-      created_ts
+      posts {
+        id
+        text
+        profile_photo
+      }
     }
   }
 `;
@@ -34,14 +29,7 @@ const POST_USER = gql`
 const ProfilePage = () => {
   const { query } = useRouter();
 
-  const { data, loading } = useQuery(USER_QUERY, {
-    skip: !query.id,
-    variables: {
-      id: Number(query.id),
-    },
-  });
-
-  const { data: p } = useQuery(POST_USER, {
+  const { data, loading, error } = useQuery(USER_QUERY, {
     skip: !query.id,
     variables: {
       id: Number(query.id),
@@ -49,6 +37,7 @@ const ProfilePage = () => {
   });
 
   const user = data?.user;
+  const posts = data?.user.posts;
 
   if (!user || loading) {
     return null;
@@ -62,15 +51,17 @@ const ProfilePage = () => {
           <title>{user.name}</title>
           Posts created by the user (the user's timeline) should be shown in
           this section.
-          {p &&
-            p.post.map(({ id, text, created_ts }) => {
+          <Createpost />
+          {posts &&
+            posts.map(({ id, text, profile_photo }) => {
               return (
-                <div key={id}>
-                  {text} {created_ts}
+                <div key={id} className=' flex justify-items-center p-1'>
+                  {text}
+                  <img className='h-max w-6  ml-3' src={profile_photo} />
                 </div>
               );
             })}
-             <button className=' bg-blue-800 rounded-lg text-white p-2  mt-4'>
+          <button className=' bg-blue-800 rounded-lg text-white p-2  mt-4'>
             Follow "{user.name}"
           </button>
         </Card>

@@ -21,46 +21,33 @@ const typeDefs = gql`
   }
 
   type Post {
-    id: Int!  
+    id: Int
     text: String!
     user: User!
-    user_id: Int!
-    comm_id: Int!
-    created_ts:String
-  }
-
-  type feeds{
-
+    user_id: String!
+    name: String!
+    profile_photo: String!
     source_id: Int!
-    source_type: Int
-    post_id:Int
   }
-  
+
+
   type Query {
     community(id: Int!): Community!
-    communities: [Community]
     user(id: Int!): User!
-    users:User!
     posts: [Post!]!
     post(id: Int!): [Post]!
-    commPost(id: Int!): [Post]!
-    feeds:[feeds]
+   
   }
 
   type Mutation {
-    addPost(input:addPostI): Post
-    addPostC(input:addPostCommuI): Post
+    addPost(input: AddPostInput!): Post
   }
 
-  input addPostCommuI{
-    text: String
-    comm_id: Int
-  }
-
-  input addPostI {
-    text: String
-    user_id: Int
-    feeds:Int
+  input AddPostInput {
+    id: Int
+    text: String!
+    user_id: String!
+    source_id: Int!
   }
 
 `;

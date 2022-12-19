@@ -16,16 +16,12 @@ const COMMUNITY_QUERY = gql`
         name
         profile_photo
       }
-    }
-  }
-`;
-const POST_COMM = gql`
-  query ($id: Int!) {
-    commPost(id: $id) {
-      id
-      text
-      comm_id
-      created_ts
+      posts {
+        id
+        text
+        name
+        profile_photo
+      }
     }
   }
 `;
@@ -33,13 +29,6 @@ const POST_COMM = gql`
 const CommunityPage = () => {
   const { query } = useRouter();
   const { data, loading } = useQuery(COMMUNITY_QUERY, {
-    skip: !query.id,
-    variables: {
-      id: Number(query.id),
-    },
-  });
-
-  const { data: c } = useQuery(POST_COMM, {
     skip: !query.id,
     variables: {
       id: Number(query.id),
@@ -58,12 +47,12 @@ const CommunityPage = () => {
         <Card className='flex-1'>
           <h1 className='text-2xl font-bold'>Welcome to {community.name}</h1>
 
-          {c &&
-            c.commPost.map(({ id, text, created_ts }) => {
+          {posts &&
+            posts.map(({ id, text, created_ts }) => {
               return (
                 <div key={id}>
                   {text}
-                  {created_ts}
+                  {name} {profile_photo}
                 </div>
               );
             })}

@@ -1,17 +1,37 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import 'tailwindcss/tailwind.css'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import 'tailwindcss/tailwind.css';
+import { offsetLimitPagination } from '@apollo/client/utilities';
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        posts: offsetLimitPagination(),
+      },
+    },
+    Community: {
+      fields: {
+        posts: offsetLimitPagination(),
+      },
+    },
+    User: {
+      fields: {
+        posts: offsetLimitPagination(),
+      },
+    },
+  },
+});
 
 const client = new ApolloClient({
-    uri: '/api/graphql',
-    cache: new InMemoryCache(),
+  uri: '/api/graphql',
+  cache,
 });
 
 const App = ({ Component, pageProps }) => (
-    <>
-        <ApolloProvider client={client}>
-            <Component {...pageProps} />
-        </ApolloProvider>
-    </>
+  <>
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  </>
 );
 
 export default App;
