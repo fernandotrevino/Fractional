@@ -18,7 +18,8 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-infinite-scroll-component": "^6.1.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
