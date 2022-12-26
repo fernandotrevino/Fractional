@@ -13,7 +13,7 @@ export const communities = async (user) => {
 };
 
 
-export const posts = async (user) => {
+export const posts = async (user, { offset, limit }) => {
 
   const posts = await query(`
     SELECT DISTINCT p.*, u.name, u.profile_photo
@@ -24,7 +24,6 @@ export const posts = async (user) => {
     ORDER BY p.created_ts DESC;
     `, [user.id]);
 
-  return posts;
-
+  return posts.slice(offset, limit + offset)
 
 };

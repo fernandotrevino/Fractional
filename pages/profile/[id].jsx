@@ -5,8 +5,9 @@ import CommunityCardButton from '@/components/CommunityCardButton';
 import Page from '@/components/Page';
 import Createpost from '@/components/createpost';
 
+import { InView } from 'react-intersection-observer';
 const USER_QUERY = gql`
-  query ($id: Int!) {
+  query ($id: Int!, $limit: Int, $offset: Int) {
     user(id: $id) {
       id
       name
@@ -17,10 +18,11 @@ const USER_QUERY = gql`
         name
         icon
       }
-      posts {
+      posts(limit: $limit, offset: $offset) {
         id
         text
         profile_photo
+        created_ts
       }
     }
   }
@@ -29,10 +31,12 @@ const USER_QUERY = gql`
 const ProfilePage = () => {
   const { query } = useRouter();
 
-  const { data, loading, error } = useQuery(USER_QUERY, {
+  const { data, loading, fetchMore } = useQuery(USER_QUERY, {
     skip: !query.id,
     variables: {
       id: Number(query.id),
+      offset: 0,
+      limit: 4,
     },
   });
 
@@ -51,16 +55,36 @@ const ProfilePage = () => {
           <title>{user.name}</title>
           Posts created by the user (the user's timeline) should be shown in
           this section.
-          <Createpost />
+          <Createpost source_id={user.id} />
           {posts &&
-            posts.map(({ id, text, profile_photo }) => {
-              return (
-                <div key={id} className=' flex justify-items-center p-1'>
+            posts.map(({ id, profile_photo, text, created_ts }) => (
+              <div>
+                <Card
+                  key={id}
+                  className='flex items-center justify-start my-2 '
+                  style={{ backgroundColor: 'white' }}>
+                  <img className='  mr-5 ' src={profile_photo} />
                   {text}
-                  <img className='h-max w-6  ml-3' src={profile_photo} />
-                </div>
-              );
-            })}
+                </Card>
+                <p className=' text-xs flex justify-end'>{created_ts}</p>
+              </div>
+            ))}
+          {data && (
+            <InView
+              onChange={async (inView) => {
+                const currentLength = posts.length;
+                if (inView) {
+                  await fetchMore({
+                    variables: {
+                      id: Number(query.id),
+                      offset: currentLength,
+                      limit: currentLength + 2,
+                    },
+                  });
+                }
+              }}
+            />
+          )}
           <button className=' bg-blue-800 rounded-lg text-white p-2  mt-4'>
             Follow "{user.name}"
           </button>

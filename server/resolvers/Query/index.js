@@ -36,14 +36,14 @@ export const post = async (_, { id }) => {
 };
 
 
-export const posts = async () => {
+export const posts = async (_, { offset, limit }) => {
   const posts = await query(`
   SELECT DISTINCT posts.*, users.name, users.profile_photo
   FROM posts
   INNER JOIN users
   ON posts.user_id = users.id
   ORDER BY posts.created_ts DESC;
-  ` );
-  return posts;
+  `);
+  return posts.slice(offset, limit + offset);
 
 };

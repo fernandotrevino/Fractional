@@ -44,7 +44,8 @@ CREATE TABLE posts (
   text        VARCHAR(256)  NOT NULL,
   user_id     INTEGER       NOT NULL,
   created_ts  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
-  updated_ts  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+  updated_ts  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+  source_id   INTEGER       NOT NULL
 );
 
 

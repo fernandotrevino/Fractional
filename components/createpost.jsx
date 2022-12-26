@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
-
+import { useMutation, gql, refetchQueries } from '@apollo/client';
+import { useRouter } from 'next/router';
+import Card from '@/components/Card';
 const ADD_POST = gql`
   mutation addPost($input: AddPostInput!) {
     addPost(input: $input) {
@@ -13,22 +14,13 @@ const ADD_POST = gql`
 
 const Createpost = ({ source_id }) => {
   const [addPost] = useMutation(ADD_POST);
-
   const [text, setText] = useState('');
 
   return (
     <>
       <title>Create Post</title>
-
-      <input
-        placeholder='Enter text'
-        onChange={(event) => {
-          setText(event.target.value);
-        }}
-      />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
+      <form
+        onSubmit={() => {
           addPost({
             variables: {
               input: {
@@ -38,12 +30,22 @@ const Createpost = ({ source_id }) => {
               },
             },
           });
-        }}
-        type='submit'
-        style={{ backgroundColor: 'lightblue', marginLeft: '100px' }}
-        className='flex items-center p-2 rounded ml-auto'>
-        Add Post
-      </button>
+        }}>
+        <Card className=' bg-gray-200 '>
+          <input
+            className='mr-3 rounded-md p-4  hover:none focus:none'
+            placeholder='Enter text'
+            onChange={(event) => {
+              setText(event.target.value);
+            }}
+          />
+          <button
+            type='submit'
+            className='  p-2  bg-red-500 rounded ml-auto inline-block'>
+            Add Post
+          </button>
+        </Card>
+      </form>
     </>
   );
 };

@@ -3,9 +3,10 @@ import { useQuery, gql } from '@apollo/client';
 import Card from '@/components/Card';
 import CardButton from '@/components/CardButton';
 import Page from '@/components/Page';
-
+import { InView } from 'react-intersection-observer';
+import Createpost from '@/components/createpost';
 const COMMUNITY_QUERY = gql`
-  query ($id: Int!) {
+  query ($id: Int!, $limit: Int, $offset: Int) {
     community(id: $id) {
       id
       name
@@ -16,10 +17,10 @@ const COMMUNITY_QUERY = gql`
         name
         profile_photo
       }
-      posts {
+      posts(limit: $limit, offset: $offset) {
         id
         text
-        name
+        created_ts
         profile_photo
       }
     }
@@ -28,15 +29,17 @@ const COMMUNITY_QUERY = gql`
 
 const CommunityPage = () => {
   const { query } = useRouter();
-  const { data, loading } = useQuery(COMMUNITY_QUERY, {
+  const { data, loading, fetchMore } = useQuery(COMMUNITY_QUERY, {
     skip: !query.id,
     variables: {
       id: Number(query.id),
+      offset: 0,
+      limit: 4,
     },
   });
 
   const community = data?.community;
-
+  const posts = data?.community.posts;
   if (!community || loading) {
     return null;
   }
@@ -46,19 +49,35 @@ const CommunityPage = () => {
       <div className='flex'>
         <Card className='flex-1'>
           <h1 className='text-2xl font-bold'>Welcome to {community.name}</h1>
-
+          <Createpost source_id={community.id} />
           {posts &&
-            posts.map(({ id, text, created_ts }) => {
-              return (
-                <div key={id}>
+            posts.map(({ id, profile_photo, text, created_ts }) => (
+              <div>
+                <Card
+                  className='flex items-center justify-start my-2 '
+                  style={{ backgroundColor: 'white' }}>
+                  <img className='  mr-5 ' src={profile_photo} />
                   {text}
-                  {name} {profile_photo}
-                </div>
-              );
-            })}
-          <button className=' bg-blue-800 rounded-lg text-white p-4  mt-4'>
-            Follow "{community.name}"
-          </button>
+                </Card>
+                <p className=' text-xs flex justify-end'>{created_ts}</p>
+              </div>
+            ))}
+          {data && (
+            <InView
+              onChange={async (inView) => {
+                const currentLength = posts.length;
+                if (inView) {
+                  await fetchMore({
+                    variables: {
+                      id: Number(query.id),
+                      offset: currentLength,
+                      limit: currentLength + 2,
+                    },
+                  });
+                }
+              }}
+            />
+          )}
         </Card>
 
         <Card className='ml-4 py-10  flex-none grid justify-items-center gap-2 max-w-xs'>
