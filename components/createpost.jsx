@@ -33,6 +33,7 @@ const Createpost = ({ source_id }) => {
         }}>
         <Card className=' bg-gray-200 '>
           <input
+            required
             className='mr-3 rounded-md p-4  hover:none focus:none'
             placeholder='Enter text'
             onChange={(event) => {
