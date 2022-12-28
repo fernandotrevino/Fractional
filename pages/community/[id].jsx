@@ -48,6 +48,7 @@ const CommunityPage = () => {
     <Page>
       <div className='flex'>
         <Card className='flex-1'>
+          <title>{community.name}</title>
           <h1 className='text-2xl font-bold'>Welcome to {community.name}</h1>
           <Createpost source_id={community.id} />
           {posts &&

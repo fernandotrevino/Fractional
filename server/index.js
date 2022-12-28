@@ -17,6 +17,7 @@ const typeDefs = gql`
     bio: String!
     profile_photo: String!
     communities: [Community!]!
+    follow: Boolean!
     posts(offset: Int, limit: Int): [Post!]!
   }
 
@@ -28,7 +29,7 @@ const typeDefs = gql`
     name: String!
     profile_photo: String!
     source_id: Int!
-  created_ts:String!
+    created_ts:String!
   }
 
 

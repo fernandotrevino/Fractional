@@ -10,6 +10,7 @@ const POST_Q = gql`
       id
       text
       profile_photo
+      created_ts
     }
   }
 `;
