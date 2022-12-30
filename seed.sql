@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS communities;
 DROP TABLE IF EXISTS feeds;
 DROP TABLE IF EXISTS posts;
-
+DROP TABLE IF EXISTS  followers;
 
 CREATE TABLE users (
   id             INTEGER       PRIMARY KEY,
@@ -48,6 +48,12 @@ CREATE TABLE posts (
   source_id   INTEGER       NOT NULL
 );
 
+CREATE TABLE followers (
+  user_id       INTEGER       PRIMARY KEY,
+  follower_id   INTEGER       NOT NULL,
+  created_at    TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE ( follower_id)
+);
 
 INSERT INTO users
 (id, created_at, updated_at, profile_photo, name, bio)

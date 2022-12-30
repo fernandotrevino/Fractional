@@ -22,7 +22,18 @@ export const community = async (_, { id }) => {
   return community;
 };
 
+export const followers = async (_, { id }) => {
 
+  const followers = await query(`
+  SELECT f.*
+  FROM memberships m
+  JOIN follower f on m.user_id = f.id
+  WHERE m.user_id = ?
+    `, [id]);
+
+  return followers
+
+};
 export const post = async (_, { id }) => {
   const post = await query(`
   SELECT posts.id, posts.text, posts.user_id, users.name, users.profile_photo

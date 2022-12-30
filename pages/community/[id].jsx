@@ -5,6 +5,7 @@ import CardButton from '@/components/CardButton';
 import Page from '@/components/Page';
 import { InView } from 'react-intersection-observer';
 import Createpost from '@/components/createpost';
+import Follower from '@/components/follower';
 const COMMUNITY_QUERY = gql`
   query ($id: Int!, $limit: Int, $offset: Int) {
     community(id: $id) {

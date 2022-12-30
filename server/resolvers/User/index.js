@@ -27,3 +27,15 @@ export const posts = async (user, { offset, limit }) => {
   return posts.slice(offset, limit + offset)
 
 };
+export const followers = async (user) => {
+
+  const followers = await query(`
+    SELECT DISTINCT f.* 
+    FROM memberships m
+    JOIN followers f on m.user_id = f.user_id
+    JOIN users u ON f.user_id = u.id
+    WHERE f.follower_id = ?
+  
+    `, [user.id]);
+  return followers;
+};

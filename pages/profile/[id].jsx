@@ -4,7 +4,7 @@ import Card from '@/components/Card';
 import CommunityCardButton from '@/components/CommunityCardButton';
 import Page from '@/components/Page';
 import Createpost from '@/components/createpost';
-
+import Follower from '@/components/follower';
 import { InView } from 'react-intersection-observer';
 const USER_QUERY = gql`
   query ($id: Int!, $limit: Int, $offset: Int) {
@@ -13,6 +13,10 @@ const USER_QUERY = gql`
       name
       profile_photo
       bio
+      followers {
+        user_id
+        follower_id
+      }
       communities {
         id
         name
@@ -63,10 +67,15 @@ const ProfilePage = () => {
                   key={id}
                   className='flex items-center justify-start my-2 '
                   style={{ backgroundColor: 'white' }}>
-                  <img className='  mr-5 ' src={profile_photo} />
+                  <img
+                    className='mr-5'
+                    src={profile_photo}
+                    href={`/profile/${id}`}
+                  />
                   {text}
                 </Card>
-                <p className=' text-xs flex justify-end'>{created_ts}</p>
+
+                <hr />
               </div>
             ))}
           {data && (
@@ -85,9 +94,8 @@ const ProfilePage = () => {
               }}
             />
           )}
-          <button className=' bg-blue-800 rounded-lg text-white p-2  mt-4'>
-            Follow "{user.name}"
-          </button>
+          <hr />
+          <Follower follower_id={user.id} />
         </Card>
         <Card className='ml-4 py-10  flex-none grid justify-items-center gap-2 max-w-xs'>
           <div className='text-2xl rounded-full bg-white w-14 h-14 flex items-center justify-center'>

@@ -40,6 +40,7 @@ const Home = () => {
                   <img className='  mr-5 ' src={profile_photo} />
                   {text}
                 </Card>
+                <hr />
                 <p className=' text-xs flex justify-end'>{created_ts}</p>
               </div>
             ))}

@@ -17,8 +17,14 @@ const typeDefs = gql`
     bio: String!
     profile_photo: String!
     communities: [Community!]!
-    follow: Boolean!
     posts(offset: Int, limit: Int): [Post!]!
+    followers:[Follows]!
+  }
+
+  type Follows {
+ \
+    user_id: String
+    follower_id: String
   }
 
   type Post {
@@ -38,11 +44,18 @@ const typeDefs = gql`
     user(id: Int!): User!
     posts(offset: Int, limit: Int): [Post!]!
     post(id: Int!): [Post]!
-   
+    followers(id: Int!): [Follows]
   }
 
   type Mutation {
     addPost(input: AddPostInput!): Post
+    AddFollower(input: AddFollowerInput!): Follows
+  }
+
+  input AddFollowerInput{
+    id:Int
+    user_id: String
+    follower_id: Int
   }
 
   input AddPostInput {

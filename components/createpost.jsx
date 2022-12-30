@@ -31,10 +31,10 @@ const Createpost = ({ source_id }) => {
             },
           });
         }}>
-        <Card className=' bg-gray-200 '>
+        <Card>
           <input
             required
-            className='mr-3 rounded-md p-4  hover:none focus:none'
+            className='mr-3 rounded-md p-4 '
             placeholder='Enter text'
             onChange={(event) => {
               setText(event.target.value);
@@ -42,10 +42,11 @@ const Createpost = ({ source_id }) => {
           />
           <button
             type='submit'
-            className='  p-2  bg-red-500 rounded ml-auto inline-block'>
-            Add Post
+            className='  p-2  bg-green-300 text-white capitalize font-bold rounded mt-3 inline-block'>
+            Add Post !
           </button>
         </Card>
+        <hr />
       </form>
     </>
   );
