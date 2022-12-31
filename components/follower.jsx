@@ -11,14 +11,12 @@ const ADD_FOLLOWER = gql`
 
 const Follower = ({ follower_id }) => {
   const [AddFollower] = useMutation(ADD_FOLLOWER);
-
   return (
     <>
       <title>Create Post</title>
-
       <Card>
         <button
-          className='  p-2  bg-green-300 rounded font-bold text-white capitalize '
+          className='p-2  bg-green-300 rounded font-bold text-white capitalize '
           onClick={() => {
             AddFollower({
               variables: {

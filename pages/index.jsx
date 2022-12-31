@@ -37,7 +37,7 @@ const Home = () => {
                   key={id}
                   className='flex items-center justify-start my-2 '
                   style={{ backgroundColor: 'white' }}>
-                  <img className='  mr-5 ' src={profile_photo} />
+                  <img className='mr-5' src={profile_photo} />
                   {text}
                 </Card>
                 <hr />

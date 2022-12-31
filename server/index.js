@@ -22,7 +22,7 @@ const typeDefs = gql`
   }
 
   type Follows {
- \
+ 
     user_id: String
     follower_id: String
   }

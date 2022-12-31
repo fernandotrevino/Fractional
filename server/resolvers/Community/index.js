@@ -11,8 +11,6 @@ export const members = async (community) => {
   return members;
 };
 
-
-
 export const posts = async (community, { offset, limit }) => {
 
   const posts = await query(`

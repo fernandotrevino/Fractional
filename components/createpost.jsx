@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useMutation, gql, refetchQueries } from '@apollo/client';
-import { useRouter } from 'next/router';
+import { useMutation, gql } from '@apollo/client';
 import Card from '@/components/Card';
 const ADD_POST = gql`
   mutation addPost($input: AddPostInput!) {
