@@ -33,9 +33,9 @@ CREATE TABLE memberships (
 );
 
 CREATE TABLE feeds (
-  source_id,
-  source_type,
-  post_id,
+  source_id  INTEGER,
+  source_type INTEGER,
+  post_id INTEGER,
   PRIMARY KEY (post_id, source_id, source_type)
 );
 

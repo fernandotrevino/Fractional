@@ -16,7 +16,7 @@ export const posts = async (community, { offset, limit }) => {
   const posts = await query(`
     SELECT DISTINCT p.*, u.name, u.profile_photo
     FROM memberships m
-    JOIN posts p on m.user_id = p.user_id
+    JOIN posts p ON m.user_id = p.user_id
     JOIN users u ON p.user_id = u.id
     WHERE p.source_id = ?
     AND m.community_id = ?
